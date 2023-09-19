@@ -1,20 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import Login from './Login';
+import RestaurantPicker from './RestaurantPicker';
+import Menu from './Menu';
+import { styles } from './styles';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [selectedRestaurant, setSelectedRestaurant] = useState(null);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    if (!isLoggedIn) {
+        return <Login setIsLoggedIn={setIsLoggedIn} />;
+    }
+    
+    if (isLoggedIn && !selectedRestaurant) {
+        return <RestaurantPicker setSelectedRestaurant={setSelectedRestaurant} />;
+    }
+    
+    if (isLoggedIn && selectedRestaurant) {
+        return <Menu selectedRestaurant={selectedRestaurant} setSelectedRestaurant={setSelectedRestaurant} />;
+    }
+
+    return (
+        <View style={styles.container}>
+            <Text>Você está logado!</Text>
+        </View>
+    );
+}
